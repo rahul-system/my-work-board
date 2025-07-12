@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jira Style Project Board</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Style for the element being dragged */
+        .dragging {
+            opacity: 0.5;
+            border: 2px dashed #cbd5e0;
+        }
+
+        /* Custom scrollbar for task columns */
+        .tasks-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tasks-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .tasks-container::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+
+        .tasks-container::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Work Item Board</h1>
+            <p class="text-gray-500 mt-2">A simple Jira-style board to organize your tasks.</p>
+        </header>
+
+        <!-- Task Creation Form -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8 max-w-2xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Add New Task</h2>
+            <form id="add-task-form">
+                <div class="mb-4">
+                    <label for="task-title" class="block text-sm font-medium text-gray-600 mb-1">Task Title</label>
+                    <input type="text" id="task-title" placeholder="e.g., Design the new homepage" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+                <div class="mb-4">
+                    <label for="task-desc" class="block text-sm font-medium text-gray-600 mb-1">Description</label>
+                    <textarea id="task-desc" rows="3" placeholder="Add a more detailed description..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out shadow-sm">
+                    Add Task
+                </button>
+            </form>
+        </div>
+
+        <!-- Board Columns -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 auto-cols-fr">
+            <!-- To Do Column -->
+            <div id="todo" class="bg-white rounded-lg shadow-md p-4 flex flex-col min-w-[220px] resize-x overflow-auto">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 pb-2 border-b-2 border-red-400">
+                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded-full text-sm font-bold mr-2"
+                        id="todo-count">0</span>
+                    To Do
+                </h3>
+                <div class="tasks-container flex-grow min-h-[200px] p-2 bg-gray-50 rounded-md overflow-y-auto"
+                    data-status="todo">
+                    <!-- Tasks will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- In Fixed Column -->
+            <div id="fixed"
+                class="bg-white rounded-lg shadow-md p-4 flex flex-col min-w-[220px] resize-x overflow-auto">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 pb-2 border-b-2 border-yellow-400">
+                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-sm font-bold mr-2"
+                        id="fixed-count">0</span>
+                    Fixed
+                </h3>
+                <div class="tasks-container flex-grow min-h-[200px] p-2 bg-gray-50 rounded-md overflow-y-auto"
+                    data-status="fixed">
+                    <!-- Tasks will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Testing Column -->
+            <div id="testing"
+                class="bg-white rounded-lg shadow-md p-4 flex flex-col min-w-[220px] resize-x overflow-auto">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 pb-2 border-b-2 border-blue-400">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-sm font-bold mr-2"
+                        id="testing-count">0</span>
+                    Testing
+                </h3>
+                <div class="tasks-container flex-grow min-h-[200px] p-2 bg-gray-50 rounded-md overflow-y-auto"
+                    data-status="testing">
+                    <!-- Tasks will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- Done Column -->
+            <div id="done" class="bg-white rounded-lg shadow-md p-4 flex flex-col min-w-[220px] resize-x overflow-auto">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4 pb-2 border-b-2 border-green-400">
+                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-sm font-bold mr-2"
+                        id="done-count">0</span>
+                    Done
+                </h3>
+                <div class="tasks-container flex-grow min-h-[200px] p-2 bg-gray-50 rounded-md overflow-y-auto"
+                    data-status="done">
+                    <!-- Tasks will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addTaskForm = document.getElementById('add-task-form');
+            const taskColumns = document.querySelectorAll('.tasks-container');
+
+            // --- DATA MANAGEMENT ---
+            // Function to get tasks from localStorage
+            const getTasks = () => {
+                const tasks = localStorage.getItem('tasks');
+                return tasks ? JSON.parse(tasks) : [];
+            };
+
+            // Function to save tasks to localStorage
+            const saveTasks = (tasks) => {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            };
+
+            // Initialize tasks array
+            let tasks = getTasks();
+
+            // --- UI RENDERING ---
+            // Function to render all tasks on the board
+            const renderTasks = () => {
+                // Clear existing tasks from columns
+                taskColumns.forEach(column => {
+                    column.innerHTML = '';
+                });
+
+                // Reset counts
+                let todoCount = 0;
+                let fixedCount = 0;
+                let testingCount = 0;
+                let doneCount = 0;
+
+                // Create and append task elements
+                tasks.forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-sm', 'mb-3', 'cursor-grab', 'hover:shadow-md', 'transition-shadow');
+                    taskElement.setAttribute('draggable', 'true');
+                    taskElement.dataset.id = task.id;
+
+                    taskElement.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-semibold text-md text-gray-800">${task.title}</h4>
+                            <button class="delete-task text-gray-400 hover:text-red-500 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-2">${task.description}</p>
+                    `;
+
+                    // Add task to the correct column
+                    const column = document.querySelector(`.tasks-container[data-status="${task.status}"]`);
+                    if (column) {
+                        column.appendChild(taskElement);
+                    }
+
+                    // Update counts
+                    if (task.status === 'todo') todoCount++;
+                    if (task.status === 'fixed') fixedCount++;
+                    if (task.status === 'testing') testingCount++;
+                    if (task.status === 'done') doneCount++;
+                });
+
+                // Update count display
+                document.getElementById('todo-count').textContent = todoCount;
+                document.getElementById('fixed-count').textContent = fixedCount;
+                document.getElementById('testing-count').textContent = testingCount;
+                document.getElementById('done-count').textContent = doneCount;
+
+                // Add event listeners for new elements
+                addDragAndDropListeners();
+                addDeleteListeners();
+            };
+
+            // --- TASK LOGIC ---
+            // Function to add a new task
+            const addTask = (event) => {
+                event.preventDefault();
+                const titleInput = document.getElementById('task-title');
+                const descInput = document.getElementById('task-desc');
+
+                // --- GEN-Z EMOJI LOGIC ---
+                const emojis = ['🔥', '✨', '😎', '🚀', '💡', '🎉', '🥳', '🦄', '🤩', '👾', '🌈', '🍕', '🍔', '🍟', '🍦', '🍭', '🧃', '🎮', '🎧', '🕺'];
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const newTask = {
+                    id: `task-${Date.now()}`,
+                    title: `${randomEmoji} ${titleInput.value}`,
+                    description: descInput.value,
+                    status: 'todo'
+                };
+
+                tasks.push(newTask);
+                saveTasks(tasks);
+                renderTasks();
+
+                // Clear form fields
+                titleInput.value = '';
+                descInput.value = '';
+            };
+
+            // Function to delete a task
+            const deleteTask = (taskId) => {
+                tasks = tasks.filter(task => task.id !== taskId);
+                saveTasks(tasks);
+                renderTasks();
+            };
+
+            // --- EVENT LISTENERS ---
+            // Add task form submission
+            addTaskForm.addEventListener('submit', addTask);
+
+            // Function to add delete listeners to task buttons
+            const addDeleteListeners = () => {
+                const deleteButtons = document.querySelectorAll('.delete-task');
+                deleteButtons.forEach(button => {
+                    // Remove old listener to prevent duplicates
+                    button.replaceWith(button.cloneNode(true));
+                });
+                // Add new listeners
+                document.querySelectorAll('.delete-task').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent drag from starting
+                        const taskId = button.closest('.bg-white').dataset.id;
+                        deleteTask(taskId);
+                    });
+                });
+            };
+
+            // --- DRAG AND DROP LOGIC ---
+            const addDragAndDropListeners = () => {
+                const draggables = document.querySelectorAll('[draggable="true"]');
+
+                draggables.forEach(draggable => {
+                    draggable.addEventListener('dragstart', () => {
+                        draggable.classList.add('dragging');
+                    });
+
+                    draggable.addEventListener('dragend', () => {
+                        draggable.classList.remove('dragging');
+                    });
+                });
+
+                taskColumns.forEach(container => {
+                    container.addEventListener('dragover', e => {
+                        e.preventDefault(); // Necessary to allow dropping
+                        const afterElement = getDragAfterElement(container, e.clientY);
+                        const draggable = document.querySelector('.dragging');
+                        if (draggable) {
+                            if (afterElement == null) {
+                                container.appendChild(draggable);
+                            } else {
+                                container.insertBefore(draggable, afterElement);
+                            }
+                        }
+                    });
+
+                    container.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        const draggable = document.querySelector('.dragging');
+                        if (draggable) {
+                            const taskId = draggable.dataset.id;
+                            const newStatus = container.dataset.status;
+
+                            // Update the task's status in the array
+                            const task = tasks.find(t => t.id === taskId);
+                            if (task) {
+                                task.status = newStatus;
+                                saveTasks(tasks);
+                                renderTasks(); // Re-render to update counts and ensure consistency
+                            }
+                        }
+                    });
+                });
+            };
+
+            // Helper function to determine where to drop the element
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('[draggable="true"]:not(.dragging)')];
+
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+
+            // --- INITIALIZATION ---
+            // Initial render on page load
+            renderTasks();
+        });
+    </script>
+
+</body>
+
+</html>
