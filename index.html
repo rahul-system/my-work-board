@@ -139,17 +139,35 @@
             const addTaskForm = document.getElementById('add-task-form');
             const taskColumns = document.querySelectorAll('.tasks-container');
 
-            // --- DATA MANAGEMENT ---
-            // Function to get tasks from localStorage
-            const getTasks = () => {
-                const tasks = localStorage.getItem('tasks');
-                return tasks ? JSON.parse(tasks) : [];
-            };
 
-            // Function to save tasks to localStorage
-            const saveTasks = (tasks) => {
+            // --- DATA MANAGEMENT ---
+            // Get tasks from localStorage
+            function getTasks() {
+                const tasksStr = localStorage.getItem('tasks');
+                return tasksStr ? JSON.parse(tasksStr) : [];
+            }
+
+            // Save tasks to localStorage
+            function saveTasks() {
                 localStorage.setItem('tasks', JSON.stringify(tasks));
-            };
+            }
+
+            // Function to load tasks from uploaded file
+            function loadTasksFromUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    try {
+                        tasks = JSON.parse(e.target.result);
+                        saveTasks();
+                        renderTasks();
+                    } catch (err) {
+                        alert('Invalid file format.');
+                    }
+                };
+                reader.readAsText(file);
+            }
 
             // Initialize tasks array
             let tasks = getTasks();
@@ -212,6 +230,7 @@
             };
 
             // --- TASK LOGIC ---
+
             // Function to add a new task
             const addTask = (event) => {
                 event.preventDefault();
@@ -230,7 +249,7 @@
                 };
 
                 tasks.push(newTask);
-                saveTasks(tasks);
+                saveTasks();
                 renderTasks();
 
                 // Clear form fields
@@ -238,10 +257,11 @@
                 descInput.value = '';
             };
 
+
             // Function to delete a task
             const deleteTask = (taskId) => {
                 tasks = tasks.filter(task => task.id !== taskId);
-                saveTasks(tasks);
+                saveTasks();
                 renderTasks();
             };
 
@@ -329,8 +349,37 @@
             }
 
 
+
+            // --- FILE UPLOAD/DOWNLOAD BUTTONS ---
+            // Add Download/Upload buttons above the board
+            const boardContainer = document.querySelector('.container');
+            const controlsDiv = document.createElement('div');
+            controlsDiv.className = 'flex gap-4 mb-6 justify-center';
+            controlsDiv.innerHTML = `
+                <button id="download-board" class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200 ease-in-out shadow-sm">Download Board</button>
+                <input type="file" id="upload-board" accept="application/json" style="display:none" />
+                <button id="upload-board-btn" class="bg-yellow-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-200 ease-in-out shadow-sm">Upload Board</button>
+            `;
+            boardContainer.insertBefore(controlsDiv, boardContainer.children[1]);
+
+            document.getElementById('download-board').addEventListener('click', () => {
+                const blob = new Blob([JSON.stringify(tasks, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'tasks.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            document.getElementById('upload-board-btn').addEventListener('click', () => {
+                document.getElementById('upload-board').click();
+            });
+            document.getElementById('upload-board').addEventListener('change', loadTasksFromUpload);
+
             // --- INITIALIZATION ---
-            // Initial render on page load
+            // Initial render on page load (empty board)
             renderTasks();
         });
     </script>
