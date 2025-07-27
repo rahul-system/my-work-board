@@ -7,14 +7,15 @@
  * @returns {string} CSV string with header row.
  */
 function jsonToCsv(tasks) {
-    const headers = ['task-id', 'title', 'description', 'status'];
+    const headers = ['task-id', 'title', 'description', 'status', 'comments'];
     // Each field is quoted, and empty fields are handled
     const escape = (str) => '"' + (str === undefined || str === null ? '' : String(str).replace(/"/g, '""')) + '"';
     const rows = tasks.map(task => [
-        escape(task.id),
+        escape(task.id || task['task-id']),
         escape(task.title),
         escape(task.description),
-        escape(task.status)
+        escape(task.status),
+        escape(Array.isArray(task.comments) ? task.comments.join('; ') : (task.comments || ''))
     ].join(','));
     return [headers.join(','), ...rows].join('\n');
 }
