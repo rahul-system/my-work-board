@@ -1,0 +1,82 @@
+task-id,title,description,status
+"task-1752901301169","🦄 Barcode: Adjust the font-size ","Auto adjust the font-size in barcode label prints for long text","todo"
+"task-1752902099810","🎉 FT- Items : Stock Value is not getting calculated","Stock Value is coming `0` on item detail screen
+","todo"
+"task-1752902171175","🦄 UI- Items : Rectify the Symmetric of Image Upload in Item Screen","right now alignment of upload and AI suggest fields in not proper in upload image box","todo"
+"task-1752902256923","🎉 FT - Items : Date fetched & Displayed in Table on Item Screen to be Txn Date not the created ones","","todo"
+"task-1752902351164","🥳 FT - Items : Quantity & Item Amount is displayed as `0` for opening stock txn in table on Item Detail screen","","todo"
+"task-1752902412931","✨ UI - Items : Rename the field to Stock-out price for Remove stock txns","","todo"
+"task-1752902609197","🧃 FT - Items : Handle preview & Edit for adjustment txns","Disable the preview mode for adjustment txns
+On Edit open adjustment txns screen with prefilled data instead of POS screen","todo"
+"task-1752903312008","🎧 FT- Items : Handle Filter and Search behavior on Item Details screen","Check the Search Behavior on which all field its getting applied
+Update the Filter options on Item Details screen
+","todo"
+"task-1752903439591","🍟 UX - Items : Item Details Txn List --> Edit Txns --> Close txns --> Item Details Txn List ","Actual : User Lands on Item Details Screen","todo"
+"task-1752903488877","👾 FT: Handle Round Off Error in QuickAddItem view & in itemDetail txn list screen","","todo"
+"task-1752903528925","🍦 FT- Invoice : Correct the GST values in Theme 2 Invoice Print","","todo"
+"task-1752915794869","🔥 FT- SaleTxn : Footer Field values are not getting saved ","Add Notes,
+Terms & Conditions
+Transportation Details
+
+All these values are not getting saved ","todo"
+"task-1752915893244","🍦 FT - SaleTxn : Facing Error in saving Txn in Edit mode if the itemName is updated","Add SaleTxn with Item1 ---> update the itemName to Item2 ---> Open Txn in Edit mode and try to save Getting DB error(Something Went Wrong)","todo"
+"task-1752916325925","🍕 FT - SaleTxn : Issue with the Discount Value change on updating the itemQty","ScreenRecording Shared","todo"
+"task-1752922221647","🍭 UI-Item : Unit conversion field is not accepting decimal numbers","","todo"
+"task-1752923105203","🍔 FT - SaleTxn : Getting Issue with Add Sale for Item having item unit set to None","Add item with Unit None --> Add same item in SaleTxn --> change the unit to some other unit say Bag and change it back to None again --> Try saving txn","todo"
+"task-1752923149429","🤩 FT - SaleTxn : When Adding New Item directly in Txn MRP value to auto Populate in Price field","","todo"
+"task-1752923700572","🍦 FT - SaleTxn : Issue with the Hold Txn ","","todo"
+"task-1752924644596","🥳 UX - SaleTxn : Clicking on POS Fast Bill is opening SaleTxn screen instead of POS Screen","","todo"
+"task-1752927693625","🔥 FT - SaleTxn : Put Hard check limit on no of items added in Txn","","todo"
+"task-1752927766634","🍦 FT - Txn : When large set of new Items are added from Txn table getting something went wrong","Unique New ItemName added on SaleTxn  around 50
+Tried Saving the txn
+Getting Something Went Wrong error","todo"
+"task-1752927830303","🍟 FT - SaleTxn : Issue with New Item Add if added in two rows with same name","","todo"
+"task-1752928166894","🍦 FT - SaleTxn : Received Amount getting saved for hold orders as well","Its impacting the Analytics card as well as Customer Balance","todo"
+"task-1752928317483","✨ FT- Items : +Add for Low Stock is not working in Item Details screen","","todo"
+"task-1752928901014","👾 FT - Items : UnitId is not getting set for Inventory Txns in OrderItems Table ","Opening Stock
+Add Stock
+Remove Stock
+For all these txn UnitId is not set in orderItems table","todo"
+"task-1752932224224","🍕 FT - Items : Issue with StockQty calculation at ItemDetail and Txn Screen ","DB shared for Item 1 (id =6)
+expected 16.8
+
+SELECT
+    SUM(
+        CASE
+            WHEN OD.txnType IN (2, 20, 21) THEN OI.quantity  -- Add to stock
+            WHEN OD.txnType IN (1, 22) THEN -OI.quantity     -- Subtract from stock
+            ELSE 0                                           -- Ignore others
+        END
+    ) AS currentStockQty
+FROM
+    OrderItems OI
+LEFT JOIN
+    SubOrderDetails SOD ON SOD.id = OI.subOrderId
+LEFT JOIN
+    OrderDetails OD ON OD.id = SOD.orderId
+WHERE
+    OI.itemId = 6;","todo"
+"task-1752941930916","🍦 FT - Party : Issue with the party balance","","todo"
+"task-1753003699764","👾 FT - PrchTxn : Sale is coming in Purchase txns","","todo"
+"task-1753004197499","🕺 FT - PrchTxn : Wrong Sale Price displayed for any item added through PurchaseTxn","Add a new item in Purchase txn
+and save it
+go to inventory and check the salePrice of the item --> its showing purchasePrice in salePrice field
+
+Due to -> purchasePrice getting saved in ItemPrices table ","todo"
+"task-1753004335426","🦄 FT - Txn : Mrp is not getting saved for new items from Txn Screen","Add a new item with MRP in lineItem for sale/purchase
+it should be saved in ItemPrices table currently its not getting saved","todo"
+"task-1753004404898","🔥 FT - PrchTxn : Restrict the invoice for purchaseTxn as this is something obtained from other sellers on ur businessName","Add a custom generation only if required in that case both seller and buyerName to be displayed on invoice","todo"
+"task-1753004482448","✨ FT -Item : Item-wise Tax setting is not getting respected in Add Item screen","","todo"
+"task-1753004560564","🍟 FT - Item : Reason for disabling the itemType Switch ","","todo"
+"task-1753004684730","🎮 FT - Item : If Itemwise tax is disabled remove the with/without tax dropdown from ItemScreenUI","Based on Itemwise tax setting
+- Remove with/without tax from add item screen
+- In Edit Item screen fields to be shown if tax value is present","todo"
+"task-1753005911713","👾 FT - DashBoard : Issue with the Payment Type & Balance Due cards ","Pls put a check of negative and positive txns for all the dashboard values calculated
+Expense Payments are not getting attributed in Payment Types card","todo"
+"task-1753006142745","🍦 UI - Exp : Expense category Form is not getting discarded upon saving a new category","","todo"
+"task-1753006216362","🍦 FT - Exp : Wrong expense no is being displayed on delete expense dialog","","todo"
+"task-1753006454368","🍭 FT - Exp: Value refresh issue on Add/Edit and Delete Expense txn","check the value in Left & top view exp category","todo"
+"task-1753522570202","✨ FT - Items : SalePrice is getting saved for stock-in Price when Batch is stock in","","todo"
+"task-1753610090499","🎧 FT - Items: Restrict the Price change in Items Batch View","","todo"
+"task-1753610142813","🎉 FT - SaleTxn: Allow Sale After Stock is `0` is not working","","todo"
+"task-1753610630214","🍭 FT - SaleTxn : During Add Txn InvoiceNo Update is not getting saved","","todo"

@@ -159,7 +159,18 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     try {
-                        tasks = JSON.parse(e.target.result);
+                        let data = JSON.parse(e.target.result);
+                        // If the file uses 'task-id' as key, convert to 'id'
+                        if (Array.isArray(data) && data.length && data[0]['task-id']) {
+                            data = data.map(task => ({
+                                id: task['task-id'],
+                                title: task.title,
+                                description: task.description,
+                                status: task.status || 'todo',
+                                comments: Array.isArray(task.comments) ? task.comments : (task.comments ? [task.comments] : [])
+                            }));
+                        }
+                        tasks = data;
                         saveTasks();
                         renderTasks();
                     } catch (err) {
@@ -193,16 +204,65 @@
                     taskElement.setAttribute('draggable', 'true');
                     taskElement.dataset.id = task.id;
 
+                    // Comments section
+                    if (!task.comments) task.comments = [];
+                    const commentsHtml = `
+                        <div class="mt-2">
+                            <button class="toggle-comments text-xs text-blue-500 underline">Comments (${task.comments.length})</button>
+                            <div class="comments-section hidden mt-2">
+                                <ul class="text-xs text-gray-700 mb-2">
+                                    ${task.comments.map(c => `<li class='mb-1'>${c}</li>`).join('')}
+                                </ul>
+                                <input type="text" class="add-comment-input border px-2 py-1 rounded text-xs w-full mb-1" placeholder="Add comment..." />
+                                <button class="add-comment-btn bg-blue-500 text-white px-2 py-1 rounded text-xs">Add</button>
+                            </div>
+                        </div>
+                    `;
+
+                    // Edit modal (hidden by default)
+                    const editModalId = `edit-modal-${task.id}`;
+                    const editModalHtml = `
+                        <div id="${editModalId}" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+                            <div class="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg">
+                                <h3 class="text-lg font-semibold mb-4">Edit Task</h3>
+                                <label class="block text-sm mb-1">Title</label>
+                                <input type="text" class="edit-title w-full border rounded px-2 py-1 mb-2" value="${task.title}" />
+                                <label class="block text-sm mb-1">Description</label>
+                                <textarea class="edit-desc w-full border rounded px-2 py-1 mb-2">${task.description}</textarea>
+                                <label class="block text-sm mb-1">Status</label>
+                                <select class="edit-status w-full border rounded px-2 py-1 mb-4">
+                                    <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>To Do</option>
+                                    <option value="fixed" ${task.status === 'fixed' ? 'selected' : ''}>Fixed</option>
+                                    <option value="testing" ${task.status === 'testing' ? 'selected' : ''}>Testing</option>
+                                    <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+                                </select>
+                                <div class="flex gap-2 justify-end">
+                                    <button class="close-edit-modal bg-gray-300 px-3 py-1 rounded">Cancel</button>
+                                    <button class="save-edit-modal bg-blue-600 text-white px-3 py-1 rounded">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
                     taskElement.innerHTML = `
                         <div class="flex justify-between items-start">
                             <h4 class="font-semibold text-md text-gray-800">${task.title}</h4>
-                            <button class="delete-task text-gray-400 hover:text-red-500 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
+                            <div class="flex gap-2">
+                                <button class="edit-task text-gray-400 hover:text-blue-500 transition-colors" title="Edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13l6.293-6.293a1 1 0 011.414 0l1.586 1.586a1 1 0 010 1.414L11 15H9v-2z" />
+                                    </svg>
+                                </button>
+                                <button class="delete-task text-gray-400 hover:text-red-500 transition-colors" title="Delete">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <p class="text-gray-600 text-sm mt-2">${task.description}</p>
+                        ${commentsHtml}
+                        ${editModalHtml}
                     `;
 
                     // Add task to the correct column
@@ -227,6 +287,8 @@
                 // Add event listeners for new elements
                 addDragAndDropListeners();
                 addDeleteListeners();
+                addEditListeners();
+                addCommentListeners();
             };
 
             // --- TASK LOGIC ---
@@ -273,16 +335,73 @@
             const addDeleteListeners = () => {
                 const deleteButtons = document.querySelectorAll('.delete-task');
                 deleteButtons.forEach(button => {
-                    // Remove old listener to prevent duplicates
                     button.replaceWith(button.cloneNode(true));
                 });
-                // Add new listeners
                 document.querySelectorAll('.delete-task').forEach(button => {
                     button.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Prevent drag from starting
+                        e.stopPropagation();
                         const taskId = button.closest('.bg-white').dataset.id;
                         deleteTask(taskId);
                     });
+                });
+            };
+
+            // Add edit listeners
+            const addEditListeners = () => {
+                document.querySelectorAll('.edit-task').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const taskDiv = button.closest('.bg-white');
+                        const taskId = taskDiv.dataset.id;
+                        const modal = document.getElementById(`edit-modal-${taskId}`);
+                        if (modal) modal.classList.remove('hidden');
+
+                        // Modal logic
+                        modal.querySelector('.close-edit-modal').onclick = () => {
+                            modal.classList.add('hidden');
+                        };
+                        modal.querySelector('.save-edit-modal').onclick = () => {
+                            const title = modal.querySelector('.edit-title').value;
+                            const desc = modal.querySelector('.edit-desc').value;
+                            const status = modal.querySelector('.edit-status').value;
+                            const idx = tasks.findIndex(t => t.id === taskId);
+                            if (idx !== -1) {
+                                tasks[idx].title = title;
+                                tasks[idx].description = desc;
+                                tasks[idx].status = status;
+                                saveTasks();
+                                renderTasks();
+                                modal.classList.add('hidden');
+                            }
+                        };
+                    });
+                });
+            };
+
+            // Add comment listeners
+            const addCommentListeners = () => {
+                document.querySelectorAll('.toggle-comments').forEach(btn => {
+                    btn.onclick = () => {
+                        const section = btn.parentElement.querySelector('.comments-section');
+                        section.classList.toggle('hidden');
+                    };
+                });
+                document.querySelectorAll('.add-comment-btn').forEach(btn => {
+                    btn.onclick = () => {
+                        const taskDiv = btn.closest('.bg-white');
+                        const taskId = taskDiv.dataset.id;
+                        const input = btn.parentElement.querySelector('.add-comment-input');
+                        const comment = input.value.trim();
+                        if (comment) {
+                            const idx = tasks.findIndex(t => t.id === taskId);
+                            if (idx !== -1) {
+                                if (!tasks[idx].comments) tasks[idx].comments = [];
+                                tasks[idx].comments.push(comment);
+                                saveTasks();
+                                renderTasks();
+                            }
+                        }
+                    };
                 });
             };
 

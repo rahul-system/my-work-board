@@ -1,0 +1,254 @@
+[
+  {
+    "id": "task-1752901301169",
+    "title": "🦄 Barcode: Adjust the font-size ",
+    "description": "Auto adjust the font-size in barcode label prints for long text",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902099810",
+    "title": "🎉 FT- Items : Stock Value is not getting calculated",
+    "description": "Stock Value is coming `0` on item detail screen\n",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902171175",
+    "title": "🦄 UI- Items : Rectify the Symmetric of Image Upload in Item Screen",
+    "description": "right now alignment of upload and AI suggest fields in not proper in upload image box",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902256923",
+    "title": "🎉 FT - Items : Date fetched & Displayed in Table on Item Screen to be Txn Date not the created ones",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902351164",
+    "title": "🥳 FT - Items : Quantity & Item Amount is displayed as `0` for opening stock txn in table on Item Detail screen",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902412931",
+    "title": "✨ UI - Items : Rename the field to Stock-out price for Remove stock txns",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752902609197",
+    "title": "🧃 FT - Items : Handle preview & Edit for adjustment txns",
+    "description": "Disable the preview mode for adjustment txns\nOn Edit open adjustment txns screen with prefilled data instead of POS screen",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752903312008",
+    "title": "🎧 FT- Items : Handle Filter and Search behavior on Item Details screen",
+    "description": "Check the Search Behavior on which all field its getting applied\nUpdate the Filter options on Item Details screen\n",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752903439591",
+    "title": "🍟 UX - Items : Item Details Txn List --> Edit Txns --> Close txns --> Item Details Txn List ",
+    "description": "Actual : User Lands on Item Details Screen",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752903488877",
+    "title": "👾 FT: Handle Round Off Error in QuickAddItem view & in itemDetail txn list screen",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752903528925",
+    "title": "🍦 FT- Invoice : Correct the GST values in Theme 2 Invoice Print",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752915794869",
+    "title": "🔥 FT- SaleTxn : Footer Field values are not getting saved ",
+    "description": "Add Notes, \nTerms & Conditions \nTransportation Details \n\nAll these values are not getting saved ",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752915893244",
+    "title": "🍦 FT - SaleTxn : Facing Error in saving Txn in Edit mode if the itemName is updated",
+    "description": "Add SaleTxn with Item1 ---> update the itemName to Item2 ---> Open Txn in Edit mode and try to save Getting DB error(Something Went Wrong)",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752916325925",
+    "title": "🍕 FT - SaleTxn : Issue with the Discount Value change on updating the itemQty",
+    "description": "ScreenRecording Shared",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752922221647",
+    "title": "🍭 UI-Item : Unit conversion field is not accepting decimal numbers",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752923105203",
+    "title": "🍔 FT - SaleTxn : Getting Issue with Add Sale for Item having item unit set to None",
+    "description": "Add item with Unit None --> Add same item in SaleTxn --> change the unit to some other unit say Bag and change it back to None again --> Try saving txn",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752923149429",
+    "title": "🤩 FT - SaleTxn : When Adding New Item directly in Txn MRP value to auto Populate in Price field",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752923700572",
+    "title": "🍦 FT - SaleTxn : Issue with the Hold Txn ",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752924644596",
+    "title": "🥳 UX - SaleTxn : Clicking on POS Fast Bill is opening SaleTxn screen instead of POS Screen",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752927693625",
+    "title": "🔥 FT - SaleTxn : Put Hard check limit on no of items added in Txn",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752927766634",
+    "title": "🍦 FT - Txn : When large set of new Items are added from Txn table getting something went wrong",
+    "description": "Unique New ItemName added on SaleTxn  around 50 \nTried Saving the txn \nGetting Something Went Wrong error",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752927830303",
+    "title": "🍟 FT - SaleTxn : Issue with New Item Add if added in two rows with same name",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752928166894",
+    "title": "🍦 FT - SaleTxn : Received Amount getting saved for hold orders as well",
+    "description": "Its impacting the Analytics card as well as Customer Balance",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752928317483",
+    "title": "✨ FT- Items : +Add for Low Stock is not working in Item Details screen",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752928901014",
+    "title": "👾 FT - Items : UnitId is not getting set for Inventory Txns in OrderItems Table ",
+    "description": "Opening Stock\nAdd Stock\nRemove Stock\nFor all these txn UnitId is not set in orderItems table",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752932224224",
+    "title": "🍕 FT - Items : Issue with StockQty calculation at ItemDetail and Txn Screen ",
+    "description": "DB shared for Item 1 (id =6)\nexpected 16.8 \n\nSELECT \n    SUM(\n        CASE \n            WHEN OD.txnType IN (2, 20, 21) THEN OI.quantity  -- Add to stock\n            WHEN OD.txnType IN (1, 22) THEN -OI.quantity     -- Subtract from stock\n            ELSE 0                                           -- Ignore others\n        END\n    ) AS currentStockQty\nFROM \n    OrderItems OI\nLEFT JOIN \n    SubOrderDetails SOD ON SOD.id = OI.subOrderId\nLEFT JOIN \n    OrderDetails OD ON OD.id = SOD.orderId\nWHERE \n    OI.itemId = 6;",
+    "status": "todo"
+  },
+  {
+    "id": "task-1752941930916",
+    "title": "🍦 FT - Party : Issue with the party balance",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753003699764",
+    "title": "👾 FT - PrchTxn : Sale is coming in Purchase txns",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004197499",
+    "title": "🕺 FT - PrchTxn : Wrong Sale Price displayed for any item added through PurchaseTxn",
+    "description": "Add a new item in Purchase txn\nand save it \ngo to inventory and check the salePrice of the item --> its showing purchasePrice in salePrice field\n\nDue to -> purchasePrice getting saved in ItemPrices table ",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004335426",
+    "title": "🦄 FT - Txn : Mrp is not getting saved for new items from Txn Screen",
+    "description": "Add a new item with MRP in lineItem for sale/purchase \nit should be saved in ItemPrices table currently its not getting saved",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004404898",
+    "title": "🔥 FT - PrchTxn : Restrict the invoice for purchaseTxn as this is something obtained from other sellers on ur businessName",
+    "description": "Add a custom generation only if required in that case both seller and buyerName to be displayed on invoice",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004482448",
+    "title": "✨ FT -Item : Item-wise Tax setting is not getting respected in Add Item screen",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004560564",
+    "title": "🍟 FT - Item : Reason for disabling the itemType Switch ",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753004684730",
+    "title": "🎮 FT - Item : If Itemwise tax is disabled remove the with/without tax dropdown from ItemScreenUI",
+    "description": "Based on Itemwise tax setting \n- Remove with/without tax from add item screen \n- In Edit Item screen fields to be shown if tax value is present",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753005911713",
+    "title": "👾 FT - DashBoard : Issue with the Payment Type & Balance Due cards ",
+    "description": "Pls put a check of negative and positive txns for all the dashboard values calculated\nExpense Payments are not getting attributed in Payment Types card",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753006142745",
+    "title": "🍦 UI - Exp : Expense category Form is not getting discarded upon saving a new category",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753006216362",
+    "title": "🍦 FT - Exp : Wrong expense no is being displayed on delete expense dialog",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753006454368",
+    "title": "🍭 FT - Exp: Value refresh issue on Add/Edit and Delete Expense txn",
+    "description": "check the value in Left & top view exp category",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753522570202",
+    "title": "✨ FT - Items : SalePrice is getting saved for stock-in Price when Batch is stock in",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753610090499",
+    "title": "🎧 FT - Items: Restrict the Price change in Items Batch View",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753610142813",
+    "title": "🎉 FT - SaleTxn: Allow Sale After Stock is `0` is not working",
+    "description": "",
+    "status": "todo"
+  },
+  {
+    "id": "task-1753610630214",
+    "title": "🍭 FT - SaleTxn : During Add Txn InvoiceNo Update is not getting saved",
+    "description": "",
+    "status": "todo"
+  }
+]
